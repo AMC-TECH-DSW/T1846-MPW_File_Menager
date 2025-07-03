@@ -50,7 +50,7 @@
       for (const item of data) {
         if (item.type === "file" && item.name.endsWith(".bin")) {
           files.push({ name: item.name, path: path + item.name });
-        } else if (item.type === "dir" && (item.name === "LDC_IMG" || item.name === "SOFT_LCD")) {
+        } else if (item.type === "dir" && (item.name === "LCD_IMG" || item.name === "SOFT_LCD")) {
           // Rekurencyjnie pobierz pliki z podfolderu
           const subFiles = await fetchFiles(item.name + "/");
           files = files.concat(subFiles);
