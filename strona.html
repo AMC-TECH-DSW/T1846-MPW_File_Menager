@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>MPW Ota Preparer</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    input, button, select { margin-top: 1em; display: block; }
+    .part { margin-top: 1em; display: block; }
+    footer { margin-top: 3em; text-align: center; color: #555; font-size: 0.9em; }
+  </style>
+  <!-- JSZip do tworzenia ZIPa -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <h1>MPW Ota Preparer (web)</h1>
+
+  <input type="file" id="fileInput" accept=".bin" />
+  <select id="typeSelect">
+    <option value="image">IMAGE</option>
+    <option value="softLcd">LCD</option>
+    <option value="softControl">CTRL</option>
+  </select>
+  <button id="processBtn">Przetwórz plik</button>
+
+  <div id="output"></div>
+
+  <footer>
+    AMC Tech 2025
+  </footer>
+
+  <script src="ota-preparer.js"></script>
+</body>
+</html>
