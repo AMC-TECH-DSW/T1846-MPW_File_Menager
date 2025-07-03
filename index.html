@@ -8,8 +8,8 @@
     input, button, select { margin-top: 1em; display: block; }
     .part { margin-top: 1em; display: block; }
     footer { margin-top: 3em; text-align: center; color: #555; font-size: 0.9em; }
+    ul.ota-list { margin-top: 3em; }
   </style>
-  <!-- JSZip do tworzenia ZIPa -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
@@ -25,10 +25,47 @@
 
   <div id="output"></div>
 
+  <h2>Dostępne pliki OTA</h2>
+  <ul class="ota-list" id="otaFileList">
+    <li>Ładowanie listy plików...</li>
+  </ul>
+
   <footer>
     AMC Tech 2025
   </footer>
 
   <script src="ota-preparer.js"></script>
+  <script>
+    // Pobierz listę plików .bin z repozytorium na GitHub
+    const owner = "AMC-TECH-DSW";
+    const repo = "T1846-MPW_File_Menager";
+
+    fetch(`https://api.github.com/repos/${owner}/${repo}/contents/`)
+      .then(res => res.json())
+      .then(files => {
+        const list = document.getElementById("otaFileList");
+        list.innerHTML = ""; // Wyczyść "Ładowanie..."
+
+        files.forEach(file => {
+          if (file.name.endsWith(".bin")) {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = `https://${owner}.github.io/${repo}/${file.name}`;
+            a.textContent = file.name;
+            a.target = "_blank";
+            li.appendChild(a);
+            list.appendChild(li);
+          }
+        });
+
+        if (list.innerHTML.trim() === "") {
+          list.innerHTML = "<li>Brak plików OTA w repozytorium.</li>";
+        }
+      })
+      .catch(err => {
+        document.getElementById("otaFileList").innerHTML = "<li>Błąd podczas ładowania listy plików.</li>";
+        console.error(err);
+      });
+  </script>
 </body>
 </html>
