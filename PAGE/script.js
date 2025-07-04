@@ -31,6 +31,7 @@ async function showFiles() {
     const images = [];
     const lcds = [];
     const controls = [];
+    const iots = [];
 
     files.forEach(file => {
       const name = file.name.toLowerCase();
@@ -40,6 +41,8 @@ async function showFiles() {
         lcds.push(file);
       } else if (name.includes("softcontrol")) {
         controls.push(file);
+      } else if (name.includes("iot")) {
+        iots.push(file);
       }
     });
 
@@ -77,7 +80,8 @@ async function showFiles() {
     const groups = [
       createGroup("Image", images),
       createGroup("Soft LCD", lcds),
-      createGroup("Soft Control", controls)
+      createGroup("Soft Control", controls),
+      createGroup("IOT", iots)
     ];
 
     groups.forEach(g => {
