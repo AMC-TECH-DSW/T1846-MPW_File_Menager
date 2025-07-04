@@ -3,45 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <title>MPW Ota Preparer</title>
-  <style>
-    body { font-family: sans-serif; padding: 2em; }
-    input, button, select { margin-top: 1em; display: block; }
-    .part { margin-top: 1em; display: block; }
-    footer { margin-top: 3em; text-align: center; color: #555; font-size: 0.9em; }
-    ul.ota-list { margin-top: 2em; }
-  </style>
+  <link rel="stylesheet" href="PAGE/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
-  <h1>MPW Ota Preparer (web)</h1>
+  <header>
+    <img src="PAGE/logo.png" alt="AMC Tech Logo" class="logo" />
+  </header>
 
-  <input type="file" id="fileInput" accept=".bin" />
-  <select id="typeSelect">
-    <option value="image">IMAGE</option>
-    <option value="softLcd">LCD</option>
-    <option value="softControl">CTRL</option>
-  </select>
-  <button id="processBtn">Przetwórz plik</button>
+  <main>
+    <h1>MPW Ota Preparer</h1>
 
-  <div id="output"></div>
+    <input type="file" id="fileInput" accept=".bin" />
+    <select id="typeSelect">
+      <option value="image">IMAGE</option>
+      <option value="softLcd">LCD</option>
+      <option value="softControl">CTRL</option>
+    </select>
+    <button id="processBtn">Przetwórz plik</button>
 
-  <h2>Dostępne pliki OTA</h2>
-  <button id="copyPathsBtn">Kopiuj wszystkie ścieżki</button>
-  <ul class="ota-list" id="otaFileList">
-    <li>Ładowanie listy plików...</li>
-  </ul>
+    <div id="output"></div>
+
+    <h2>Dostępne pliki OTA</h2>
+    <ul class="ota-list" id="otaFileList">
+      <li>Ładowanie listy plików...</li>
+    </ul>
+    <button id="copyPathsBtn">Kopiuj wszystkie ścieżki</button>
+  </main>
 
   <footer>
     AMC Tech 2025
   </footer>
 
-  <script src="ota-preparer.js"></script>
+  <script src="PAGE/ota-preparer.js"></script>
   <script>
     const owner = "AMC-TECH-DSW";
     const repo = "T1846-MPW_File_Menager";
     const baseUrl = `https://${owner}.github.io/${repo}/`;
 
-    async function fetchFiles(path = "") {
+    async function fetchFiles(path = "OTA/") {
       const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
       const res = await fetch(url);
       const data = await res.json();
@@ -51,8 +51,8 @@
       for (const item of data) {
         if (item.type === "file" && item.name.endsWith(".bin")) {
           files.push({ name: item.name, path: path + item.name });
-        } else if (item.type === "dir" && (item.name === "LDC_IMG" || item.name === "SOFT_LCD")) {
-          const subFiles = await fetchFiles(item.name + "/");
+        } else if (item.type === "dir") {
+          const subFiles = await fetchFiles(path + item.name + "/");
           files = files.concat(subFiles);
         }
       }
