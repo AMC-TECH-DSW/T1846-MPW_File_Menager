@@ -78,16 +78,19 @@ document.getElementById('processBtn').addEventListener('click', async () => {
     const filename = `Part_${partNum + 1}_${type}.bin`;
     generatedFiles.push({ name: filename, data: finalData });
 
-    // Link pojedynczy
+    // Link do pobrania w nowej linii
     const blob = new Blob([finalData], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = filename;
     link.textContent = `Pobierz ${filename}`;
-    link.classList.add('part');
 
-    output.appendChild(link);
+    const wrapper = document.createElement('div');
+    wrapper.style.marginTop = "8px";
+    wrapper.appendChild(link);
+
+    output.appendChild(wrapper);
   }
 
   // Dodaj przycisk "Pobierz wszystko (ZIP)"
