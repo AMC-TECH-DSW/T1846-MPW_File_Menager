@@ -8,7 +8,7 @@
     input, button, select { margin-top: 1em; display: block; }
     .part { margin-top: 1em; display: block; }
     footer { margin-top: 3em; text-align: center; color: #555; font-size: 0.9em; }
-    ul.ota-list { margin-top: 3em; }
+    ul.ota-list { margin-top: 2em; }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
@@ -26,6 +26,7 @@
   <div id="output"></div>
 
   <h2>Dostępne pliki OTA</h2>
+  <button id="copyPathsBtn">Kopiuj wszystkie ścieżki</button>
   <ul class="ota-list" id="otaFileList">
     <li>Ładowanie listy plików...</li>
   </ul>
@@ -50,8 +51,7 @@
       for (const item of data) {
         if (item.type === "file" && item.name.endsWith(".bin")) {
           files.push({ name: item.name, path: path + item.name });
-        } else if (item.type === "dir" && (item.name === "LCD_IMG" || item.name === "SOFT_LCD")) {
-          // Rekurencyjnie pobierz pliki z podfolderu
+        } else if (item.type === "dir" && (item.name === "LDC_IMG" || item.name === "SOFT_LCD")) {
           const subFiles = await fetchFiles(item.name + "/");
           files = files.concat(subFiles);
         }
@@ -85,6 +85,25 @@
         console.error(error);
       }
     }
+
+    async function copyAllPaths() {
+      const listItems = document.querySelectorAll("#otaFileList li a");
+      let allLinks = "";
+
+      listItems.forEach(link => {
+        allLinks += link.href + "\n";
+      });
+
+      try {
+        await navigator.clipboard.writeText(allLinks);
+        alert("Skopiowano wszystkie ścieżki do schowka!");
+      } catch (err) {
+        alert("Błąd podczas kopiowania do schowka.");
+        console.error(err);
+      }
+    }
+
+    document.getElementById("copyPathsBtn").addEventListener("click", copyAllPaths);
 
     showFiles();
   </script>
