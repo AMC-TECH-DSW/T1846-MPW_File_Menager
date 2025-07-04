@@ -2,17 +2,23 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <title>MPW Ota Preparer</title>
+  <title>AMC MPW OTA</title>
   <link rel="stylesheet" href="PAGE/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
   <header>
     <img src="PAGE/logo.png" alt="AMC Tech Logo" class="logo" />
+    <div class="header-title">AMC MPW OTA</div>
   </header>
 
-  <main>
-    <h1>MPW Ota Preparer</h1>
+  <div class="tabs">
+    <button class="tab-button active" onclick="showTab('preparer')">File Preparer</button>
+    <button class="tab-button" onclick="showTab('files')">Available Files</button>
+  </div>
+
+  <main id="preparerTab">
+    <h1>File Preparer</h1>
 
     <input type="file" id="fileInput" accept=".bin" />
     <select id="typeSelect">
@@ -23,8 +29,10 @@
     <button id="processBtn">Przetwórz plik</button>
 
     <div id="output"></div>
+  </main>
 
-    <h2>Dostępne pliki OTA</h2>
+  <main id="filesTab" style="display: none;">
+    <h2>Available Files</h2>
     <ul class="ota-list" id="otaFileList">
       <li>Ładowanie listy plików...</li>
     </ul>
@@ -36,76 +44,6 @@
   </footer>
 
   <script src="PAGE/ota-preparer.js"></script>
-  <script>
-    const owner = "AMC-TECH-DSW";
-    const repo = "T1846-MPW_File_Menager";
-    const baseUrl = `https://${owner}.github.io/${repo}/`;
-
-    async function fetchFiles(path = "OTA/") {
-      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-      const res = await fetch(url);
-      const data = await res.json();
-
-      let files = [];
-
-      for (const item of data) {
-        if (item.type === "file" && item.name.endsWith(".bin")) {
-          files.push({ name: item.name, path: path + item.name });
-        } else if (item.type === "dir") {
-          const subFiles = await fetchFiles(path + item.name + "/");
-          files = files.concat(subFiles);
-        }
-      }
-      return files;
-    }
-
-    async function showFiles() {
-      const list = document.getElementById("otaFileList");
-      list.innerHTML = "<li>Ładowanie...</li>";
-
-      try {
-        const files = await fetchFiles();
-        list.innerHTML = "";
-
-        files.forEach(file => {
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.href = baseUrl + file.path;
-          a.textContent = file.path;
-          a.target = "_blank";
-          li.appendChild(a);
-          list.appendChild(li);
-        });
-
-        if (files.length === 0) {
-          list.innerHTML = "<li>Brak plików OTA w repozytorium.</li>";
-        }
-      } catch (error) {
-        list.innerHTML = "<li>Błąd podczas ładowania plików.</li>";
-        console.error(error);
-      }
-    }
-
-    async function copyAllPaths() {
-      const listItems = document.querySelectorAll("#otaFileList li a");
-      let allLinks = "";
-
-      listItems.forEach(link => {
-        allLinks += link.href + "\n";
-      });
-
-      try {
-        await navigator.clipboard.writeText(allLinks);
-        alert("Skopiowano wszystkie ścieżki do schowka!");
-      } catch (err) {
-        alert("Błąd podczas kopiowania do schowka.");
-        console.error(err);
-      }
-    }
-
-    document.getElementById("copyPathsBtn").addEventListener("click", copyAllPaths);
-
-    showFiles();
-  </script>
+  <script src="PAGE/script.js"></script>
 </body>
 </html>

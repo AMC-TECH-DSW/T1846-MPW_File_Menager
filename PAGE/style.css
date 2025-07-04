@@ -1,39 +1,77 @@
 body {
-  background-color: #111;
-  color: #fff;
+  background-color: #fff;
+  color: #333;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  padding: 0;
 }
 
 header {
+  background-color: #1d93a3;
   display: flex;
   justify-content: center;
-  padding: 20px;
-  background-color: #1d93a3;
+  padding: 20px 0 0 0;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logo {
   height: 50px;
 }
 
+.header-title {
+  background-color: #fff;
+  color: #1d93a3;
+  padding: 10px 20px;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 10px;
+  border-radius: 0 0 8px 8px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tab-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #1d93a3;
+  border-radius: 6px 6px 0 0;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+}
+
+.tab-button.active {
+  background-color: #1d93a3;
+  color: #fff;
+}
+
 main {
-  max-width: 800px;
+  max-width: 500px;
+  background-color: #f9f9f9;
   margin: 0 auto;
-  padding: 2em;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 h1, h2 {
   color: #1d93a3;
+  text-align: center;
 }
 
 input, select, button {
   margin-top: 1em;
   display: block;
   width: 100%;
-  max-width: 300px;
   padding: 10px;
-  border: none;
+  border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 16px;
 }
@@ -60,13 +98,35 @@ a:hover {
 }
 
 ul.ota-list {
-  margin-top: 2em;
+  margin-top: 1em;
   list-style: none;
   padding: 0;
 }
 
 ul.ota-list li {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+}
+
+.group-header {
+  font-weight: bold;
+  color: #1d93a3;
+  margin-top: 15px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+.group-header:hover {
+  color: #157884;
+}
+
+.group-list {
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+.group-list.collapsed {
+  display: none;
 }
 
 footer {
